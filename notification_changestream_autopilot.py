@@ -7,6 +7,9 @@ Created on Tue Nov 19 23:25:29 2019
 from database import db
 import requests as rq
 import os
+import logging
+from bson.json_util import dumps
+
 
 AUTOPILOT_APIKEY = os.environ.get('AUTOPILOT_APIKEY').strip()
 
@@ -27,9 +30,12 @@ NOTIFICATIONS_LIST_ID = "contactlist_8c31a81b-bb7e-40f8-83fb-75269b064d94"
 
 
 if __name__ == "__main__":
+    logging.basicConfig(filename="changestreaming-user-collection.log", filemode='a',
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
     db.init()
     change_stream = db.DATABASE['notification'].watch()
     for change in change_stream:
+        logging.info(dumps(change))
         operationType = change['operationType']
         documentId = change['documentKey']['_id']['$oid']
         if  operationType == 'insert':

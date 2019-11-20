@@ -8,6 +8,9 @@ from database import db
 import requests as rq
 import json
 import os
+import logging
+from bson.json_util import dumps
+
 
 AUTOPILOT_APIKEY = os.environ.get('AUTOPILOT_APIKEY').strip()
 
@@ -30,8 +33,10 @@ SLACK_LINKED_LIST_ID = "contactlist_1642457e-684b-43e2-84a3-c7cc59eeac90"
 if __name__ == "__main__":
     db.init()
     change_stream = db.DATABASE['user'].watch()
-    
+    logging.basicConfig(filename="changestreaming-user-collection.log", filemode='a',
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
     for change in change_stream:
+        logging.info(dumps(change))
         operationType = change['operationType']
         if  operationType == 'insert':
             #User is added Google Sign-up List
