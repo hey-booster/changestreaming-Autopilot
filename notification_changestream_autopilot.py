@@ -37,7 +37,6 @@ if __name__ == "__main__":
     for change in change_stream:
         logging.info(dumps(change))
         operationType = change['operationType']
-        documentId = change['documentKey']['_id']['$oid']
         if  operationType == 'insert':
             notification = change['fullDocument']
             Email = notification['email']
