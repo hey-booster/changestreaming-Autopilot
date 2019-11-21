@@ -30,7 +30,7 @@ NOTIFICATIONS_LIST_ID = "contactlist_8c31a81b-bb7e-40f8-83fb-75269b064d94"
 
 
 if __name__ == "__main__":
-    logging.basicConfig(filename="changestreaming-user-collection.log", filemode='a',
+    logging.basicConfig(filename="changestreaming-notification-collection.log", filemode='a',
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
     db.init()
     change_stream = db.DATABASE['notification'].watch()
