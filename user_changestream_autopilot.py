@@ -60,8 +60,12 @@ if __name__ == "__main__":
             #Add this to Google-Sign-Up Contact List (all users - there is no other condition)
             resp = rq.post(addToListLink.format(list_id = GOOGLE_SIGN_UP_LIST_ID,
                                                 contact_id = contact_id), headers = get_headers)
+            del Email
         elif operationType == 'update':
             updateFields = change['updateDescription']['updatedFields']
+            documentId = change["documentKey"]["_id"]
+            doc = db.find_one("user", {"_id":documentId})
+            Email = doc['email']
             if 'ga_accesstoken' in updateFields.keys() or 'ga_refreshtoken' in updateFields.keys():
                 #User is added to Analytics Linked List 
                 resp = rq.post(addToListLink.format(list_id = ANALYTICS_LINKED_LIST_ID,
