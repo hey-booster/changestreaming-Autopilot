@@ -26,4 +26,4 @@ if __name__ == "__main__":
             #Open Slack Client
             slack_client = WebClient(token=sl_token)
             #Send Message to the Client
-            slack_client.chat_postMessage(channel=channel, text="Thank you for your support, we are working hard to improve your experience. :muscle:")
+            slack_client.chat_postMessage(channel=channel, text="Thank you for your support, we are working hard to improve your experience. :v:")
