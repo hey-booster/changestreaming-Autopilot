@@ -60,6 +60,10 @@ if __name__ == "__main__":
             #Add this to Google-Sign-Up Contact List (all users - there is no other condition)
             resp = rq.post(addToListLink.format(list_id = GOOGLE_SIGN_UP_LIST_ID,
                                                 contact_id = contact_id), headers = get_headers)
+            if resp.status_code == 200:
+                logging.info("SUCCESS - {} is inserted into Google Sign Up List for Autopilot".format(Email))
+            else:
+                logging.info("ERROR - {} cannot be inserted into Google Sign Up List for Autopilot - Status Code: {}".format(Email, resp.status_code))
             del Email
         elif operationType == 'update':
             updateFields = change['updateDescription']['updatedFields']
@@ -70,8 +74,17 @@ if __name__ == "__main__":
                 #User is added to Analytics Linked List 
                 resp = rq.post(addToListLink.format(list_id = ANALYTICS_LINKED_LIST_ID,
                                         contact_id = Email), headers = get_headers)
+                if resp.status_code == 200:
+                    logging.info("SUCCESS - {} is inserted into Analytics Linked List for Autopilot".format(Email))
+                else:
+                    logging.info("ERROR - {} cannot be inserted into Analytics Linked List for Autopilot - Status Code: {}".format(Email, resp.status_code))
             elif 'sl_accesstoken' in updateFields.keys():
                 #User is added to Slack Linked List
                 resp = rq.post(addToListLink.format(list_id = SLACK_LINKED_LIST_ID,
                                         contact_id = Email), headers = get_headers)
-
+                if resp.status_code == 200:
+                    logging.info("SUCCESS - {} is inserted into Slack Linked List for Autopilot".format(Email))
+                else:
+                    logging.info("ERROR - {} cannot be inserted into Slack Linked List for Autopilot - Status Code: {} ".format(Email, resp.status_code))
+        else:
+            logging.info("INFO - It is not important change - Operation Type: {}".format(operationType))

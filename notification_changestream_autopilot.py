@@ -43,4 +43,9 @@ if __name__ == "__main__":
             #For every type of notification add user into Notifications List
             resp = rq.post(addToListLink.format(list_id = NOTIFICATIONS_LIST_ID,
                                         contact_id = Email), headers = get_headers)
-
+            if resp.status_code == 200:
+                logging.info("SUCCESS - {} is inserted into Notification List for Autopilot".format(Email))
+            else:
+                logging.info("ERROR - {} cannot be inserted into Notification List for Autopilot - Status Code: {}".format(Email, resp.status_code))
+       else:
+            logging.info("INFO - It is not important change - Operation Type: {}".format(operationType))
