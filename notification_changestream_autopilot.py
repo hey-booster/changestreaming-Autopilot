@@ -47,5 +47,5 @@ if __name__ == "__main__":
                 logging.info("SUCCESS - {} is inserted into Notification List for Autopilot".format(Email))
             else:
                 logging.info("ERROR - {} cannot be inserted into Notification List for Autopilot - Status Code: {}".format(Email, resp.status_code))
-       else:
+        else:
             logging.info("INFO - It is not important change - Operation Type: {}".format(operationType))
