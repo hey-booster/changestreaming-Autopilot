@@ -50,7 +50,10 @@ if __name__ == "__main__":
                                 'FirstName': FirstName,
                                 'LastName': LastName,
                                 'Email': Email,
-                                "custom": { "string--Segment": Segment }
+                                "custom": { "string--Segment": Segment,
+                                            "integer--Analytics--Audit--Score": 0,
+                                            "string--Datasource--Name": "",
+                                            'boolean--eCommerce--Activity': False}
                                 
                             }
                     }
