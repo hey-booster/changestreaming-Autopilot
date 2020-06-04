@@ -74,20 +74,44 @@ if __name__ == "__main__":
             doc = db.find_one("user", {"_id":documentId})
             Email = doc['email']
             if 'ga_accesstoken' in updateFields.keys() or 'ga_refreshtoken' in updateFields.keys():
-                #User is added to Analytics Linked List 
-                resp = rq.post(addToListLink.format(list_id = ANALYTICS_LINKED_LIST_ID,
-                                        contact_id = Email), headers = get_headers)
-                if resp.status_code == 200:
-                    logging.info("SUCCESS - {} is inserted into Analytics Linked List for Autopilot".format(Email))
-                else:
-                    logging.info("ERROR - {} cannot be inserted into Analytics Linked List for Autopilot - Status Code: {}".format(Email, resp.status_code))
+                if doc['ga_accesstoken']:
+                    #User is added to Analytics Linked List 
+                    resp = rq.post(addToListLink.format(list_id = ANALYTICS_LINKED_LIST_ID,
+                                            contact_id = Email), headers = get_headers)
+                    if resp.status_code == 200:
+                        logging.info("SUCCESS - {} is inserted into Analytics Linked List for Autopilot".format(Email))
+                    else:
+                        logging.info("ERROR - {} cannot be inserted into Analytics Linked List for Autopilot - Status Code: {}".format(Email, resp.status_code))
             elif 'sl_accesstoken' in updateFields.keys():
                 #User is added to Slack Linked List
-                resp = rq.post(addToListLink.format(list_id = SLACK_LINKED_LIST_ID,
-                                        contact_id = Email), headers = get_headers)
-                if resp.status_code == 200:
-                    logging.info("SUCCESS - {} is inserted into Slack Linked List for Autopilot".format(Email))
+                if doc['sl_accesstoken']:
+                    resp = rq.post(addToListLink.format(list_id = SLACK_LINKED_LIST_ID,
+                                            contact_id = Email), headers = get_headers)
+                    if resp.status_code == 200:
+                        logging.info("SUCCESS - {} is inserted into Slack Linked List for Autopilot".format(Email))
+                    else:
+                        logging.info("ERROR - {} cannot be inserted into Slack Linked List for Autopilot - Status Code: {} ".format(Email, resp.status_code))
+            elif 'eCommerceActivity' in updateFields.keys():
+                if doc['eCommerceActivity']:
+                    resp = rq.post(addContactLink, data = json.dumps({
+                            "contact": {
+                                        'Email': Email,
+                                        "custom": {'boolean--eCommerce--Activity': True}
+                                        
+                                    }
+                            }), headers=post_headers)
                 else:
-                    logging.info("ERROR - {} cannot be inserted into Slack Linked List for Autopilot - Status Code: {} ".format(Email, resp.status_code))
+                    resp = rq.post(addContactLink, data = json.dumps({
+                            "contact": {
+                                        'Email': Email,
+                                        "custom": {'boolean--eCommerce--Activity': False}
+                                        
+                                    }
+                            }), headers=post_headers)
+                if resp.status_code == 200:
+                    logging.info("SUCCESS - eCommerce Activity info updated for {}".format(Email))
+                else:
+                    logging.info("ERROR - eCommerce Activity info cannot updated for {} - Status Code: {} ".format(Email, resp.status_code))
+                
         else:
             logging.info("INFO - It is not important change - Operation Type: {}".format(operationType))
