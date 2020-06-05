@@ -61,6 +61,7 @@ if __name__ == "__main__":
                         .format(Email))
                     with open('autopilot_analyticsaudit_emails.txt', 'a') as f:
                         f.write(f"{Email}\n")
+                    autopilot_analyticsaudit_emails += [Email]
                 else:
                     logging.info(
                         "ERROR - Analytics Audit score for {} cannot be added/updated - Status Code: {}"
