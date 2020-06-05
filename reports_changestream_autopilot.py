@@ -36,7 +36,7 @@ if __name__ == "__main__":
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         level=logging.INFO)
     db.init()
-    change_stream = db.DATABASE['report'].watch()
+    change_stream = db.DATABASE['reports'].watch()
     for change in change_stream:
         logging.info(dumps(change))
         operationType = change['operationType']
@@ -59,6 +59,8 @@ if __name__ == "__main__":
                     logging.info(
                         "SUCCESS - Analytics Audit score for {} is added/updated"
                         .format(Email))
+                    with open('autopilot_analyticsaudit_emails.txt', 'a') as f:
+                        f.write(f"{Email}\n")
                 else:
                     logging.info(
                         "ERROR - Analytics Audit score for {} cannot be added/updated - Status Code: {}"
